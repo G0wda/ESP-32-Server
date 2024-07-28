@@ -2,37 +2,24 @@ import machine
 led = machine.Pin(2,machine.Pin.OUT)
 led.off()
 
-# ************************
-# Configure the ESP32 wifi
-# as STAtion mode.
+
 import network
 
 sta = network.WLAN(network.STA_IF)
 if not sta.isconnected():
     print('connecting to network...')
     sta.active(True)
-    #sta.connect('your wifi ssid', 'your wifi password')
     sta.connect('OPPO F19S', '1234567890')
     while not sta.isconnected():
         pass
 print('network config:', sta.ifconfig())
 
-# ************************
-# Configure the socket connection
-# over TCP/IP
 import socket
 
-# AF_INET - use Internet Protocol v4 addresses
-# SOCK_STREAM means that it is a TCP socket.
-# SOCK_DGRAM means that it is a UDP socket.
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('',80)) # specifies that the socket is reachable 
-#                 by any address the machine happens to have
-s.listen(5)     # max of 5 socket connections
+s.bind(('',80)) 
+s.listen(5)     
 
-# ************************
-# Function for creating the
-# web page to be displayed
 def web_page():
     if led.value()==1:
         led_state = 'ON'
